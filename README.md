@@ -2,8 +2,8 @@
 
 TODO
 
-[ ] create class for default 5e style character
-[ ] implement funtions for dice and dice rolls
+1) create class for default 5e style character
+2) implement funtions for dice and dice rolls
 
 Possible Features:
 1) Auto calculations
