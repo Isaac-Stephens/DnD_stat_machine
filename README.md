@@ -1,11 +1,11 @@
 # DnD_stat_machine
 
-TODO
+## TODO
 
 1) create class for default 5e style character
 2) implement funtions for dice and dice rolls
 
-Possible Features:
+## Possible Features:
 1) Auto calculations
    - Proficiencies and Rolls (save, attack, etc.)
    - Ability to disable
