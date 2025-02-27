@@ -1,6 +1,6 @@
 CC = g++
 CFLAGS = -Wall -std=c++17
-SOURCES = main.cpp dice.cpp
+SOURCES = src/main.cpp src/dice.cpp
 OBJECTS = $(SOURCES:.cpp=.o)
 EXECUTABLE = test
 
