@@ -3,7 +3,7 @@
 ## TODO
 
 - [ ] create class for default 5e style character
-- [ ] implement funtions for dice and dice rolls
+- [x] implement funtions for dice and dice rolls
 
 ## Possible Features:
 * Auto calculations
