@@ -13,3 +13,4 @@
 * Ability to leave fields blank
 * Pdf export (Long term)
 * Virtual Dice
+* Implement GUI using Dear ImGui
