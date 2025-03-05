@@ -7,6 +7,7 @@
 
 #include <stdio.h>          // printf, fprintf
 #include <stdlib.h>         // abort
+#include <array>
 #define GLFW_INCLUDE_NONE
 #define GLFW_INCLUDE_VULKAN
 #include <GLFW/glfw3.h>
@@ -346,7 +347,7 @@ int main(int, char**)
 
     // Create window with Vulkan context
     glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
-    GLFWwindow* window = glfwCreateWindow(1920, 1080, "Down and Dirty DnD Machine v0.0.1", nullptr, nullptr);
+    GLFWwindow* window = glfwCreateWindow(1280, 720, "Down and Dirty DnD Machine v0.0.1", nullptr, nullptr);
     if (!glfwVulkanSupported())
     {
         printf("GLFW: Vulkan Not Supported\n");
@@ -413,15 +414,17 @@ int main(int, char**)
     //io.Fonts->AddFontDefault();
     //io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\segoeui.ttf", 18.0f);
     //io.Fonts->AddFontFromFileTTF("../../misc/fonts/DroidSans.ttf", 16.0f);
-    //io.Fonts->AddFontFromFileTTF("../../misc/fonts/Roboto-Medium.ttf", 16.0f);
-    //io.Fonts->AddFontFromFileTTF("../../misc/fonts/Cousine-Regular.ttf", 15.0f);
+    io.Fonts->AddFontFromFileTTF("imgui/misc/fonts/Roboto-Medium.ttf", 16.0f);
+    //io.Fonts->AddFontFromFileTTF("imgui/misc/fonts/Cousine-Regular.ttf", 15.0f);
     //ImFont* font = io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\ArialUni.ttf", 18.0f, nullptr, io.Fonts->GetGlyphRangesJapanese());
     //IM_ASSERT(font != nullptr);
 
     // Our state
-    bool show_demo_window = true;
+    bool show_demo_window = false;
     bool show_another_window = false;
-    ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+    bool show_dice_box = false;
+    bool show_settings = false;
+    ImVec4 clear_color = ImVec4(0.20f, 0.20f, 0.20f, 1.00f);
 
     // Main loop
     while (!glfwWindowShouldClose(window))
@@ -454,30 +457,149 @@ int main(int, char**)
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
 
-        // 1. Show the big demo window (Most of the sample code is in ImGui::ShowDemoWindow()! You can browse its code to learn more about Dear ImGui!).
+        if (true)
+        {
+            ImGui::Begin("Tools");
+
+            if(ImGui::Button("Dice Box"))
+                show_dice_box = true;
+            if(ImGui::Button("Customization & Debug"))
+                show_settings = true;
+
+            ImGui::End();
+        }
+
+        // Window for Dice Rolls
+        if (show_dice_box)
+        {
+            static int roll = 0;
+            static std::array<int, 7> dice = {0,0,0,0,0,0,0};  // Used to track how many dice to roll {d100,d20,d12,d10,d8,d6,d4}
+
+            ImGui::Begin("Dice Box", &show_dice_box);
+
+            ImGui::Text("D-100s:");         //D100 increment/decrement
+            ImGui::SameLine();
+            if (ImGui::Button("-##d100")) {
+                if (dice[0]>0)
+                    dice[0]--;
+                else
+                    dice[0] = 0;
+            }
+            ImGui::SameLine();
+            if (ImGui::Button("+##d100"))
+                dice[0]++;
+            ImGui::SameLine();
+            ImGui::Text("%d", dice[0]);
+            
+            ImGui::Text("D-20s: ");          //D20 increment/decrement
+            ImGui::SameLine();
+            if (ImGui::Button("-##d20")) {
+                if (dice[1]>0)
+                    dice[1]--;
+                else
+                    dice[1] = 0;
+            }
+            ImGui::SameLine();
+            if (ImGui::Button("+##d20"))
+                dice[1]++;
+            ImGui::SameLine();
+            ImGui::Text("%d", dice[1]);
+
+            ImGui::Text("D-12s: ");          //D12 increment/decrement
+            ImGui::SameLine();
+            if (ImGui::Button("-##d12")) {
+                if (dice[2]>0)
+                    dice[2]--;
+                else
+                    dice[2] = 0;
+            }
+            ImGui::SameLine();
+            if (ImGui::Button("+##d12"))
+                dice[2]++;
+            ImGui::SameLine();
+            ImGui::Text("%d", dice[2]);
+
+            ImGui::Text("D-10s: ");          //D10 increment/decrement
+            ImGui::SameLine();
+            if (ImGui::Button("-##d10")) {
+                if (dice[3]>0)
+                    dice[3]--;
+                else
+                    dice[3] = 0;
+            }
+            ImGui::SameLine();
+            if (ImGui::Button("+##d10"))
+                dice[3]++;
+            ImGui::SameLine();
+            ImGui::Text("%d", dice[3]);
+
+            ImGui::Text("D-8s:  ");          //D8 increment/decrement
+            ImGui::SameLine();
+            if (ImGui::Button("-##d8")) {
+                if (dice[4]>0)
+                    dice[4]--;
+                else
+                    dice[4] = 0;
+            }
+            ImGui::SameLine();
+            if (ImGui::Button("+##d8"))
+                dice[4]++;
+            ImGui::SameLine();
+            ImGui::Text("%d", dice[4]);
+
+            ImGui::Text("D-6s:  ");          //D6 increment/decrement
+            ImGui::SameLine();
+            if (ImGui::Button("-##d6")) {
+                if (dice[5]>0)
+                    dice[5]--;
+                else
+                    dice[5] = 0;
+            }
+            ImGui::SameLine();
+            if (ImGui::Button("+##d6"))
+                dice[5]++;
+            ImGui::SameLine();
+            ImGui::Text("%d", dice[5]);
+
+            ImGui::Text("D-4s:  ");          //D4 increment/decrement
+            ImGui::SameLine();
+            if (ImGui::Button("-##d4")) {
+                if (dice[6]>0)
+                    dice[6]--;
+                else
+                    dice[6] = 0;
+            }
+            ImGui::SameLine();
+            if (ImGui::Button("+##d4"))
+                dice[6]++;
+            ImGui::SameLine();
+            ImGui::Text("%d", dice[6]);
+
+            if (ImGui::Button("Roll"))      // Rolls the selected amount of dice and displays the value
+                roll = d_100(dice[0])+d_20(dice[1])+d_12(dice[2])+d_10(dice[3])+d_8(dice[4])+d_6(dice[5])+d_4(dice[6]);
+            ImGui::SameLine();
+            ImGui::Text("Roll = %d", roll);
+            
+
+            ImGui::End();
+        }
+        
         if (show_demo_window)
             ImGui::ShowDemoWindow(&show_demo_window);
 
-        // 2. Show a simple window that we create ourselves. We use a Begin/End pair to create a named window.
+        if (show_settings) // Settings & Debug
         {
             static float f = 0.0f;
-            static int counter = 0;
 
-            ImGui::Begin("Hello, world!");                          // Create a window called "Hello, world!" and append into it.
 
-            ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)
-            ImGui::Checkbox("Demo Window", &show_demo_window);      // Edit bools storing our window open/close state
-            ImGui::Checkbox("Another Window", &show_another_window);
+            ImGui::Begin("Customization & Debug", &show_settings);
 
-            ImGui::SliderFloat("float", &f, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
-            ImGui::ColorEdit3("clear color", (float*)&clear_color); // Edit 3 floats representing a color
+            if (ImGui::Button("ImGui Demo Window"))
+                show_demo_window = true;
 
-            if (ImGui::Button("Button"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
-                counter++;
-            ImGui::SameLine();
-            ImGui::Text("counter = %d", counter);
+            ImGui::ColorEdit3("clear color", (float*)&clear_color); // Edit 3 floats representing a color for the background
 
-            ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
+            ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate); // Display framerate
             ImGui::End();
         }
 
