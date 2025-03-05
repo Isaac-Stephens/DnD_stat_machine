@@ -10,6 +10,7 @@ LIBS = -lglfw -lvulkan -ldl -lpthread
 # Source Files
 SOURCES = \
     src/main.cpp \
+    imgui/imgui_demo.cpp \
     src/dice.cpp \
     imgui/imgui.cpp \
     imgui/imgui_draw.cpp \
@@ -22,7 +23,7 @@ SOURCES = \
 OBJECTS = $(SOURCES:.cpp=.o)
 
 # Output Executable
-EXECUTABLE = dnd_stat_machine
+EXECUTABLE = downndirtyDnD
 
 # Default Target: Compile Everything
 all: $(EXECUTABLE)

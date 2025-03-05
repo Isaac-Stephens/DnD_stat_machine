@@ -34,4 +34,7 @@
 # VSC
 .vscode/
 
-test
+# ImGUI
+*.ini
+
+downndirtyDnD
