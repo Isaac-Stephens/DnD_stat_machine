@@ -1,6 +1,7 @@
 // main.cpp
 // Currently a testing ground
 #include <iostream>
+#include "imgui.h"
 #include "dice.h"
 
 
