@@ -4,10 +4,13 @@
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_vulkan.h"
 #include "dice.h"
+#include "json.hpp"  // TODO Character Save Files
 
 #include <stdio.h>          // printf, fprintf
 #include <stdlib.h>         // abort
 #include <array>
+#include <chrono>
+#include <thread>
 #define GLFW_INCLUDE_NONE
 #define GLFW_INCLUDE_VULKAN
 #include <GLFW/glfw3.h>
@@ -44,6 +47,10 @@ static VkDescriptorPool         g_DescriptorPool = VK_NULL_HANDLE;
 static ImGui_ImplVulkanH_Window g_MainWindowData;
 static uint32_t                 g_MinImageCount = 2;
 static bool                     g_SwapChainRebuild = false;
+
+// Frame Rate Data
+const int TARGET_FPS = 60;
+const int FRAME_TIME_MS = 1000 / TARGET_FPS;  // Time per frame in milliseconds
 
 static void glfw_error_callback(int error, const char* description)
 {
@@ -414,8 +421,8 @@ int main(int, char**)
     //io.Fonts->AddFontDefault();
     //io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\segoeui.ttf", 18.0f);
     //io.Fonts->AddFontFromFileTTF("../../misc/fonts/DroidSans.ttf", 16.0f);
-    io.Fonts->AddFontFromFileTTF("imgui/misc/fonts/Roboto-Medium.ttf", 16.0f);
-    //io.Fonts->AddFontFromFileTTF("imgui/misc/fonts/Cousine-Regular.ttf", 15.0f);
+    //io.Fonts->AddFontFromFileTTF("imgui/misc/fonts/Roboto-Medium.ttf", 16.0f);
+    io.Fonts->AddFontFromFileTTF("imgui/misc/fonts/Cousine-Regular.ttf", 15.0f);
     //ImFont* font = io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\ArialUni.ttf", 18.0f, nullptr, io.Fonts->GetGlyphRangesJapanese());
     //IM_ASSERT(font != nullptr);
 
@@ -424,11 +431,14 @@ int main(int, char**)
     bool show_another_window = false;
     bool show_dice_box = false;
     bool show_settings = false;
-    ImVec4 clear_color = ImVec4(0.20f, 0.20f, 0.20f, 1.00f);
+    ImVec4 clear_color = ImVec4(0.10f, 0.10f, 0.10f, 1.00f);
 
     // Main loop
     while (!glfwWindowShouldClose(window))
     {
+        // Set Clock For FPS limiter
+        auto frameStart = std::chrono::high_resolution_clock::now();
+        
         // Poll and handle events (inputs, window resize, etc.)
         // You can read the io.WantCaptureMouse, io.WantCaptureKeyboard flags to tell if dear imgui wants to use your inputs.
         // - When io.WantCaptureMouse is true, do not dispatch mouse input data to your main application, or clear/overwrite your copy of the mouse data.
@@ -473,11 +483,14 @@ int main(int, char**)
         if (show_dice_box)
         {
             static int roll = 0;
-            static std::array<int, 7> dice = {0,0,0,0,0,0,0};  // Used to track how many dice to roll {d100,d20,d12,d10,d8,d6,d4}
+            static std::array<int, 8> dice = {0,0,0,0,0,0,0,0};  // Used to track how many dice to roll {d100,d20,d12,d10,d8,d6,d4,custom}
+            static int customDie = 0;
 
             ImGui::Begin("Dice Box", &show_dice_box);
 
             ImGui::Text("D-100s:");         //D100 increment/decrement
+            ImGui::SameLine();
+            ImGui::Text("%d", dice[0]);
             ImGui::SameLine();
             if (ImGui::Button("-##d100")) {
                 if (dice[0]>0)
@@ -488,10 +501,12 @@ int main(int, char**)
             ImGui::SameLine();
             if (ImGui::Button("+##d100"))
                 dice[0]++;
-            ImGui::SameLine();
-            ImGui::Text("%d", dice[0]);
+//            ImGui::SameLine();
+//            ImGui::Text("%d", dice[0]);
             
             ImGui::Text("D-20s: ");          //D20 increment/decrement
+            ImGui::SameLine();
+            ImGui::Text("%d", dice[1]);
             ImGui::SameLine();
             if (ImGui::Button("-##d20")) {
                 if (dice[1]>0)
@@ -502,10 +517,12 @@ int main(int, char**)
             ImGui::SameLine();
             if (ImGui::Button("+##d20"))
                 dice[1]++;
-            ImGui::SameLine();
-            ImGui::Text("%d", dice[1]);
+//            ImGui::SameLine();
+//            ImGui::Text("%d", dice[1]);
 
             ImGui::Text("D-12s: ");          //D12 increment/decrement
+            ImGui::SameLine();
+            ImGui::Text("%d", dice[2]);
             ImGui::SameLine();
             if (ImGui::Button("-##d12")) {
                 if (dice[2]>0)
@@ -516,10 +533,12 @@ int main(int, char**)
             ImGui::SameLine();
             if (ImGui::Button("+##d12"))
                 dice[2]++;
-            ImGui::SameLine();
-            ImGui::Text("%d", dice[2]);
+//            ImGui::SameLine();
+//            ImGui::Text("%d", dice[2]);
 
             ImGui::Text("D-10s: ");          //D10 increment/decrement
+            ImGui::SameLine();
+            ImGui::Text("%d", dice[3]);
             ImGui::SameLine();
             if (ImGui::Button("-##d10")) {
                 if (dice[3]>0)
@@ -530,10 +549,12 @@ int main(int, char**)
             ImGui::SameLine();
             if (ImGui::Button("+##d10"))
                 dice[3]++;
-            ImGui::SameLine();
-            ImGui::Text("%d", dice[3]);
+//            ImGui::SameLine();
+//            ImGui::Text("%d", dice[3]);
 
             ImGui::Text("D-8s:  ");          //D8 increment/decrement
+            ImGui::SameLine();
+            ImGui::Text("%d", dice[4]);
             ImGui::SameLine();
             if (ImGui::Button("-##d8")) {
                 if (dice[4]>0)
@@ -544,10 +565,12 @@ int main(int, char**)
             ImGui::SameLine();
             if (ImGui::Button("+##d8"))
                 dice[4]++;
-            ImGui::SameLine();
-            ImGui::Text("%d", dice[4]);
+//            ImGui::SameLine();
+//            ImGui::Text("%d", dice[4]);
 
             ImGui::Text("D-6s:  ");          //D6 increment/decrement
+            ImGui::SameLine();
+            ImGui::Text("%d", dice[5]);
             ImGui::SameLine();
             if (ImGui::Button("-##d6")) {
                 if (dice[5]>0)
@@ -558,10 +581,12 @@ int main(int, char**)
             ImGui::SameLine();
             if (ImGui::Button("+##d6"))
                 dice[5]++;
-            ImGui::SameLine();
-            ImGui::Text("%d", dice[5]);
+//            ImGui::SameLine();
+//            ImGui::Text("%d", dice[5]);
 
             ImGui::Text("D-4s:  ");          //D4 increment/decrement
+            ImGui::SameLine();
+            ImGui::Text("%d", dice[6]);
             ImGui::SameLine();
             if (ImGui::Button("-##d4")) {
                 if (dice[6]>0)
@@ -572,11 +597,30 @@ int main(int, char**)
             ImGui::SameLine();
             if (ImGui::Button("+##d4"))
                 dice[6]++;
+//            ImGui::SameLine();
+//            ImGui::Text("%d", dice[6]);
+
+            ImGui::Text("D-Custom");         // Custom Die increment/decrement
             ImGui::SameLine();
-            ImGui::Text("%d", dice[6]);
+            ImGui::SetNextItemWidth(100);
+            ImGui::InputInt(":##custominput", &customDie);          
+            ImGui::SameLine();
+            ImGui::Text("%d", dice[7]);
+            ImGui::SameLine();
+            if (ImGui::Button("-##dC")) {
+                if (dice[7]>0)
+                    dice[7]--;
+                else
+                    dice[7] = 0;
+            }
+            ImGui::SameLine();
+            if (ImGui::Button("+##dC"))
+                dice[7]++;
+//            ImGui::SameLine();
+//            ImGui::Text("%d", dice[7]);
 
             if (ImGui::Button("Roll"))      // Rolls the selected amount of dice and displays the value
-                roll = d_100(dice[0])+d_20(dice[1])+d_12(dice[2])+d_10(dice[3])+d_8(dice[4])+d_6(dice[5])+d_4(dice[6]);
+                roll = d_100(dice[0])+d_20(dice[1])+d_12(dice[2])+d_10(dice[3])+d_8(dice[4])+d_6(dice[5])+d_4(dice[6])+d_custom(customDie, dice[7]);
             ImGui::SameLine();
             ImGui::Text("Roll = %d", roll);
             
@@ -625,6 +669,14 @@ int main(int, char**)
             wd->ClearValue.color.float32[3] = clear_color.w;
             FrameRender(wd, draw_data);
             FramePresent(wd);
+        }
+
+        // Frame Rate Limiter
+        auto frameEnd = std::chrono::high_resolution_clock::now();
+        auto elapsedTime = std::chrono::duration_cast<std::chrono::milliseconds>(frameEnd - frameStart).count();
+
+        if (elapsedTime < FRAME_TIME_MS) {
+            std::this_thread::sleep_for(std::chrono::milliseconds(FRAME_TIME_MS - elapsedTime));
         }
     }
 

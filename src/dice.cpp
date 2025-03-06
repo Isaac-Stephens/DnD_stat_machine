@@ -14,6 +14,16 @@ int rollDie(int sides) {
 }
 
 // Implementations for each die
+
+int d_custom(int faces) {return rollDie(faces); }
+int d_custom(int faces, int n) {
+    int roll = 0;
+    for (int i=0; i<n; i++) {
+        roll += rollDie(faces);
+    }
+    return roll;
+}
+
 int d_100() { return rollDie(100); }
 int d_100(int n) {
     int roll = 0;
