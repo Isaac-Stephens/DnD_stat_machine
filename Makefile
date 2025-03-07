@@ -12,6 +12,7 @@ SOURCES = \
     src/main.cpp \
     imgui/imgui_demo.cpp \
     src/dice.cpp \
+    src/character.cpp \
     imgui/imgui.cpp \
     imgui/imgui_draw.cpp \
     imgui/imgui_widgets.cpp \

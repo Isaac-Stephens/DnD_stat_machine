@@ -10,6 +10,8 @@
    - Proficiencies and Rolls (save, attack, etc.)
    - Ability to disable
 * Ability to create new information blocks
+* Character Creation
+* Save Files
 * Ability to leave fields blank
 * Pdf export (Long term)
 * Virtual Dice

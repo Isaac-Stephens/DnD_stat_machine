@@ -4,6 +4,7 @@
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_vulkan.h"
 #include "dice.h"
+#include "character.h"
 #include "json.hpp"  // TODO Character Save Files
 
 #include <stdio.h>          // printf, fprintf
@@ -431,6 +432,7 @@ int main(int, char**)
     bool show_another_window = false;
     bool show_dice_box = false;
     bool show_settings = false;
+    bool show_character = true;
     ImVec4 clear_color = ImVec4(0.10f, 0.10f, 0.10f, 1.00f);
 
     // Main loop
@@ -467,6 +469,8 @@ int main(int, char**)
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
 
+
+        /* Window for Opening Other Windows */
         if (true)
         {
             ImGui::Begin("Tools");
@@ -475,11 +479,87 @@ int main(int, char**)
                 show_dice_box = true;
             if(ImGui::Button("Customization & Debug"))
                 show_settings = true;
+            if(ImGui::Button("Characters"))
+                show_character = true;
 
             ImGui::End();
         }
 
-        // Window for Dice Rolls
+        /* Window for Character Stats */
+        if (show_character)
+        {
+            ImGui::Begin("Character(s)", &show_character);
+            
+            static Character myCharacter;
+            
+            if (ImGui::BeginTabBar("MyTabBar")) {
+                if (ImGui::BeginTabItem(myCharacter.getName().c_str())) {
+                    ImGui::Text("Name: ");
+                    ImGui::SameLine();
+                    ImGui::Text("%s", myCharacter.getName().c_str());
+                    ImGui::Text("Race: ");
+                    ImGui::SameLine();
+                    ImGui::Text("%s", myCharacter.getRace().c_str());
+                    
+                    /* Ability Table */
+                    if (ImGui::BeginTable("AbilityScoresTable", 7, ImGuiTableFlags_Borders | ImGuiTableFlags_RowBg)) {
+                        // Column headers (Ability Names)
+                        ImGui::TableSetupColumn("##");
+                        const char* abilityNames[] = { "STR", "DEX", "CON", "INT", "WIS", "CHR" };
+                        for (const char* name : abilityNames) {
+                            ImGui::TableSetupColumn(name);
+                        }
+                        ImGui::TableHeadersRow();  // Render headers
+                        
+                        // Display ability scores
+                        ImGui::TableNextRow();
+                        ImGui::TableSetColumnIndex(0); ImGui::Text("Score:");
+                        for (int i = 0; i < 6; ++i) {
+                            int score = 0;
+                            switch (i) {
+                                case 0: score = myCharacter.getStr(); break;
+                                case 1: score = myCharacter.getDex(); break;
+                                case 2: score = myCharacter.getCon(); break;
+                                case 3: score = myCharacter.getInt(); break;
+                                case 4: score = myCharacter.getWis(); break;
+                                case 5: score = myCharacter.getChr(); break;
+                            }
+                            ImGui::TableSetColumnIndex(i + 1); ImGui::Text("%d", score);
+                        }
+                    
+                        // Display ability score modifiers
+                        ImGui::TableNextRow();
+                        ImGui::TableSetColumnIndex(0); ImGui::Text("Mod:");
+                        for (int i = 0; i < 6; ++i) {
+                            int mod = 0;
+                            switch (i) {
+                                case 0: mod = myCharacter.getAbilityMod(myCharacter.getStr()); break;
+                                case 1: mod = myCharacter.getAbilityMod(myCharacter.getDex()); break;
+                                case 2: mod = myCharacter.getAbilityMod(myCharacter.getCon()); break;
+                                case 3: mod = myCharacter.getAbilityMod(myCharacter.getInt()); break;
+                                case 4: mod = myCharacter.getAbilityMod(myCharacter.getWis()); break;
+                                case 5: mod = myCharacter.getAbilityMod(myCharacter.getChr()); break;
+                            }
+                            ImGui::TableSetColumnIndex(i + 1); ImGui::Text("%+d", mod);
+                        }
+                        
+                        ImGui::EndTable();
+                    }
+                    ImGui::EndTabItem();
+                }
+                if (ImGui::BeginTabItem("Tab 2")) {
+                    ImGui::Text("This is the second tab.");
+                    ImGui::EndTabItem();
+                }
+                if (ImGui::BeginTabItem("Tab 3")) {
+                    ImGui::Text("This is the third tab.");
+                    ImGui::EndTabItem();
+                }
+                ImGui::EndTabBar();
+            }
+            ImGui::End();
+        }
+        /* Window for Dice Rolls */
         if (show_dice_box)
         {
             static int roll = 0;
@@ -501,8 +581,6 @@ int main(int, char**)
             ImGui::SameLine();
             if (ImGui::Button("+##d100"))
                 dice[0]++;
-//            ImGui::SameLine();
-//            ImGui::Text("%d", dice[0]);
             
             ImGui::Text("D-20s: ");          //D20 increment/decrement
             ImGui::SameLine();
@@ -517,8 +595,6 @@ int main(int, char**)
             ImGui::SameLine();
             if (ImGui::Button("+##d20"))
                 dice[1]++;
-//            ImGui::SameLine();
-//            ImGui::Text("%d", dice[1]);
 
             ImGui::Text("D-12s: ");          //D12 increment/decrement
             ImGui::SameLine();
@@ -533,8 +609,6 @@ int main(int, char**)
             ImGui::SameLine();
             if (ImGui::Button("+##d12"))
                 dice[2]++;
-//            ImGui::SameLine();
-//            ImGui::Text("%d", dice[2]);
 
             ImGui::Text("D-10s: ");          //D10 increment/decrement
             ImGui::SameLine();
@@ -549,8 +623,6 @@ int main(int, char**)
             ImGui::SameLine();
             if (ImGui::Button("+##d10"))
                 dice[3]++;
-//            ImGui::SameLine();
-//            ImGui::Text("%d", dice[3]);
 
             ImGui::Text("D-8s:  ");          //D8 increment/decrement
             ImGui::SameLine();
@@ -565,8 +637,6 @@ int main(int, char**)
             ImGui::SameLine();
             if (ImGui::Button("+##d8"))
                 dice[4]++;
-//            ImGui::SameLine();
-//            ImGui::Text("%d", dice[4]);
 
             ImGui::Text("D-6s:  ");          //D6 increment/decrement
             ImGui::SameLine();
@@ -581,8 +651,6 @@ int main(int, char**)
             ImGui::SameLine();
             if (ImGui::Button("+##d6"))
                 dice[5]++;
-//            ImGui::SameLine();
-//            ImGui::Text("%d", dice[5]);
 
             ImGui::Text("D-4s:  ");          //D4 increment/decrement
             ImGui::SameLine();
@@ -597,13 +665,11 @@ int main(int, char**)
             ImGui::SameLine();
             if (ImGui::Button("+##d4"))
                 dice[6]++;
-//            ImGui::SameLine();
-//            ImGui::Text("%d", dice[6]);
 
             ImGui::Text("D-Custom");         // Custom Die increment/decrement
             ImGui::SameLine();
-            ImGui::SetNextItemWidth(100);
-            ImGui::InputInt(":##custominput", &customDie);          
+            ImGui::SetNextItemWidth(50);
+            ImGui::InputInt(":##NoStepButtons", &customDie, 0, 0, ImGuiInputTextFlags_None);          
             ImGui::SameLine();
             ImGui::Text("%d", dice[7]);
             ImGui::SameLine();
@@ -616,8 +682,6 @@ int main(int, char**)
             ImGui::SameLine();
             if (ImGui::Button("+##dC"))
                 dice[7]++;
-//            ImGui::SameLine();
-//            ImGui::Text("%d", dice[7]);
 
             if (ImGui::Button("Roll"))      // Rolls the selected amount of dice and displays the value
                 roll = d_100(dice[0])+d_20(dice[1])+d_12(dice[2])+d_10(dice[3])+d_8(dice[4])+d_6(dice[5])+d_4(dice[6])+d_custom(customDie, dice[7]);
@@ -631,10 +695,10 @@ int main(int, char**)
         if (show_demo_window)
             ImGui::ShowDemoWindow(&show_demo_window);
 
-        if (show_settings) // Settings & Debug
+        /* Settings & Debug */
+        if (show_settings)
         {
             static float f = 0.0f;
-
 
             ImGui::Begin("Customization & Debug", &show_settings);
 
@@ -647,17 +711,7 @@ int main(int, char**)
             ImGui::End();
         }
 
-        // 3. Show another simple window.
-        if (show_another_window)
-        {
-            ImGui::Begin("Another Window", &show_another_window);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
-            ImGui::Text("Hello from another window!");
-            if (ImGui::Button("Close Me"))
-                show_another_window = false;
-            ImGui::End();
-        }
-
-        // Rendering
+        /* Rendering */
         ImGui::Render();
         ImDrawData* draw_data = ImGui::GetDrawData();
         const bool is_minimized = (draw_data->DisplaySize.x <= 0.0f || draw_data->DisplaySize.y <= 0.0f);
@@ -671,7 +725,8 @@ int main(int, char**)
             FramePresent(wd);
         }
 
-        // Frame Rate Limiter
+       
+        /* Frame Rate Limiter */
         auto frameEnd = std::chrono::high_resolution_clock::now();
         auto elapsedTime = std::chrono::duration_cast<std::chrono::milliseconds>(frameEnd - frameStart).count();
 
