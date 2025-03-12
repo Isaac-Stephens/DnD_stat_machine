@@ -429,7 +429,6 @@ int main(int, char**)
 
     // Our state
     bool show_demo_window = false;
-    bool show_another_window = false;
     bool show_dice_box = false;
     bool show_settings = false;
     bool show_character = true;
@@ -487,7 +486,7 @@ int main(int, char**)
         
         static Character myCharacter;
         /* Window for Character Stats */
-        if (show_character)
+        if (show_character) // TODO More stuff to do for character creation
         {
             ImGui::Begin("Character(s)", &show_character);
             
@@ -781,7 +780,6 @@ int main(int, char**)
         /* Settings & Debug */
         if (show_settings)
         {
-            static float f = 0.0f;
 
             ImGui::Begin("Customization & Debug", &show_settings);
 
