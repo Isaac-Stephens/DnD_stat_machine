@@ -9,7 +9,8 @@
 ## Overview
 DnD Stat Machine is a C++ application designed to streamline Dungeons & Dragons character creation and stat generation. The project leverages **Dear ImGui** for a user-friendly graphical interface and **Vulkan** for rendering. It provides an intuitive way to roll dice, assign attributes, and manage character data efficiently.
 
-This project is still in a very developmental stage so usability will vary.
+_This project is still in early development._
+
 
 ## Features
 - **Dice Rolling System** – Implements various D&D dice mechanics via `dice.h` and `dice.cpp`.
