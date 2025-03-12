@@ -1,0 +1,79 @@
+{
+    "Fighter": {
+        "num_hit_die": 1,
+        "type_hit_die": 10,
+        
+        "armor": ["all", "shields"],
+        "weapons": ["simple", "martial"],
+        "tools": [null],
+        
+        "saving_throws": ["strength", "constitution"],
+        
+        "pick_skills": 2,
+        "skills": ["acrobatics", "animal_handling", "athletics", "history", "insight", "intimidation", "perception", "survival"],
+        
+        "features": ["fighting_style", "second_wind"],
+        
+        "level_progression": {
+            "2": {"num_new_hit_die": 1, "new_feats": "action_surge"},
+            "3": {"num_new_hit_die": 1, "new_feats": "martial_archetype"},
+            "4": {"num_new_hit_die": 1, "new_feats": ["asi", "martial_versatility"]},
+            "5": {"num_new_hit_die": 1, "new_feats": "extra_attack"},
+            "6": {"num_new_hit_die": 1, "new_feats": ["asi", "martial_versatility"]},
+            "7": {"num_new_hit_die": 1, "new_feats": "martial_archetype_feat"},
+            "8": {"num_new_hit_die": 1, "new_feats": ["asi", "martial_versatility"]},
+            "9": {"num_new_hit_die": 1, "new_feats": "indomitable"},
+            "10": {"num_new_hit_die": 1, "new_feats": "martial_archetype_feat"},
+            "11": {"num_new_hit_die": 1, "new_feats": "extra_attack"},
+            "12": {"num_new_hit_die": 1, "new_feats": ["asi", "martial_versatility"]},
+            "13": {"num_new_hit_die": 1, "new_feats": "indomitable"},
+            "14": {"num_new_hit_die": 1, "new_feats": ["asi", "martial_versatility"]},
+            "15": {"num_new_hit_die": 1, "new_feats": "martial_archetype_feat"},
+            "16": {"num_new_hit_die": 1, "new_feats": ["asi", "martial_versatility"]},
+            "17": {"num_new_hit_die": 1, "new_feats": ["action_surge", "indomitable"]},
+            "18": {"num_new_hit_die": 1, "new_feats": "martial_archetype_feat"},
+            "19": {"num_new_hit_die": 1, "new_feats": ["asi", "martial_versatility"]},
+            "20": {"num_new_hit_die": 1, "new_feats": "extra_attack"}
+        }
+    },
+    
+    "Barbarian": {
+        "num_hit_die": 1,
+        "type_hit_die": 12,
+        
+        "armor": ["light", "medium", "shields"],
+        "weapons": ["simple", "martial"],
+        "tools": [null],
+        
+        "saving_throws": ["strength", "constitution"],
+        
+        "pick_skills": 2,
+        "skills": ["animal_handling", "athletics", "intimidation", "nature", "perception", "survival"],
+        
+        "features": ["rage", "unarmored_defense"],
+        "rages" : 2,
+        "rage_dmg" : 2,
+        
+        "level_progression": {
+            "2": {"hit_die": 1, "rages" : 2, "rage_dmg" : 2, "new_feats": ["reckless_attack", "danger_sense"]},
+            "3": {"hit_die": 1, "rages" : 3, "rage_dmg" : 2, "new_feats": ["primal_path", "primal_knowledge"]},
+            "4": {"hit_die": 1, "rages" : 3, "rage_dmg" : 2, "new_feats": "asi"},
+            "5": {"hit_die": 1, "rages" : 3, "rage_dmg" : 2, "new_feats": ["extra_attack", "fast_movement"]},
+            "6": {"hit_die": 1, "rages" : 4, "rage_dmg" : 2, "new_feats": "primal_path_feat"},
+            "7": {"hit_die": 1, "rages" : 4, "rage_dmg" : 2, "new_feats": ["feral_instinct", "instinctive_pounce"]},
+            "8": {"hit_die": 1, "rages" : 4, "rage_dmg" : 2, "new_feats": "asi"},
+            "9": {"hit_die": 1, "rages" : 4, "rage_dmg" : 3, "new_feats": "brutal_critical"},
+            "10": {"hit_die": 1, "rages" : 4, "rage_dmg" : 3, "new_feats": ["primal_path_feat", "primal_knowledge"]},
+            "11": {"hit_die": 1, "rages" : 4, "rage_dmg" : 3, "new_feats": "relentless_rage"},
+            "12": {"hit_die": 1, "rages" : 5, "rage_dmg" : 3, "new_feats": "asi"},
+            "13": {"hit_die": 1, "rages" : 5, "rage_dmg" : 3, "new_feats": "brutal_critical"},
+            "14": {"hit_die": 1, "rages" : 5, "rage_dmg" : 3, "new_feats": "primal_path_feat"},
+            "15": {"hit_die": 1, "rages" : 5, "rage_dmg" : 3, "new_feats": "persistent_rage"},
+            "16": {"hit_die": 1, "rages" : 5, "rage_dmg" : 4, "new_feats": "asi"},
+            "17": {"hit_die": 1, "rages" : 6, "rage_dmg" : 4, "new_feats": "brutal_critical"},
+            "18": {"hit_die": 1, "rages" : 6, "rage_dmg" : 4, "new_feats": "indomitable_might"},
+            "19": {"hit_die": 1, "rages" : 6, "rage_dmg" : 4, "new_feats": "asi"},
+            "20": {"hit_die": 1, "rages" : 24001, "rage_dmg" : 4, "new_feats": "primal_champion"}
+        }
+    }
+}

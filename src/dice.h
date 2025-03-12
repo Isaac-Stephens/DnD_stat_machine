@@ -7,6 +7,9 @@
 // Each die function default rolls 1 die
 // Overloaded verions take an integer n and roll n dice
 
+int d_custom(int faces);
+int d_custom(int faces, int n);
+
 int d_100();
 int d_100(int);
 

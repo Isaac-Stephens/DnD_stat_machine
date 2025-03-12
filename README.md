@@ -4,12 +4,15 @@
 
 - [ ] create class for default 5e style character
 - [x] implement funtions for dice and dice rolls
+- [ ] show individiual values for mass dice rolls
 
 ## Possible Features:
 * Auto calculations
    - Proficiencies and Rolls (save, attack, etc.)
    - Ability to disable
 * Ability to create new information blocks
+* Character Creation
+* Save Files
 * Ability to leave fields blank
 * Pdf export (Long term)
 * Virtual Dice
