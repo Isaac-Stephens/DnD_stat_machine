@@ -355,7 +355,7 @@ int main(int, char**)
 
     // Create window with Vulkan context
     glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
-    GLFWwindow* window = glfwCreateWindow(1280, 720, "Down and Dirty DnD Machine v0.0.1", nullptr, nullptr);
+    GLFWwindow* window = glfwCreateWindow(1280, 720, "Down and Dirty DnD Machine v0.0.2", nullptr, nullptr);
     if (!glfwVulkanSupported())
     {
         printf("GLFW: Vulkan Not Supported\n");
@@ -484,13 +484,14 @@ int main(int, char**)
 
             ImGui::End();
         }
-
+        
+        static Character myCharacter;
         /* Window for Character Stats */
         if (show_character)
         {
             ImGui::Begin("Character(s)", &show_character);
             
-            static Character myCharacter;
+            
             
             if (ImGui::BeginTabBar("MyTabBar")) {
                 if (ImGui::BeginTabItem(myCharacter.getName().c_str())) {
@@ -501,6 +502,14 @@ int main(int, char**)
                     ImGui::SameLine();
                     ImGui::Text("%s", myCharacter.getRace().c_str());
                     
+                    // Display list of classes and their respective levels
+                    ImGui::Text("Class:");
+                    for (const auto& [className, level] : myCharacter.getClassLevels()) {
+                        ImGui::SameLine();
+                        ImGui::Text("%s(%d) ", className.c_str(), level);
+                    }
+                    
+
                     /* Ability Table */
                     if (ImGui::BeginTable("AbilityScoresTable", 7, ImGuiTableFlags_Borders | ImGuiTableFlags_RowBg)) {
                         // Column headers (Ability Names)
@@ -544,7 +553,81 @@ int main(int, char**)
                         }
                         
                         ImGui::EndTable();
+
+                        ImGui::Spacing();
+
+                        std::map<std::string, bool> saves = myCharacter.getSavingThrows();
+                        std::map<std::string, bool> proficiencies = myCharacter.getProficiencies();
+
+                        /* Table for Saving Throws */
+                        if (ImGui::BeginTable("SavingThrows", 3, ImGuiTableFlags_Borders | ImGuiTableFlags_RowBg)) {
+                            ImGui::TableSetupColumn("Saving Throws:", ImGuiTableColumnFlags_WidthStretch);
+                            ImGui::TableSetupColumn("Proficient?", ImGuiTableColumnFlags_WidthFixed);
+                            ImGui::TableSetupColumn("Bonus:");
+                            ImGui::TableHeadersRow();
+
+                            for (auto& [save, isProficient] : saves) {
+                                ImGui::TableNextRow();
+                                ImGui::TableSetColumnIndex(0);
+                                ImGui::Text("%s", save.c_str());
+
+                                ImGui::TableSetColumnIndex(1);
+                                ImGui::Checkbox(("##save_" + save).c_str(), myCharacter.getSave(save));
+                                
+                                
+                                int bonus = myCharacter.getAbilityMod(myCharacter.getAbility(save));
+                                if (isProficient)
+                                    bonus += myCharacter.getProfBonus();
+                                ImGui::TableSetColumnIndex(2);
+                                ImGui::Text("%+d",bonus);
+
+                            }
+                            ImGui::EndTable();
+                        }
+
+                        ImGui::Spacing();
+
+                        /* Table for Proficiencies */
+                        if (ImGui::BeginTable("Proficiencies", 3, ImGuiTableFlags_Borders | ImGuiTableFlags_RowBg)) {
+                            ImGui::TableSetupColumn("Skills:", ImGuiTableColumnFlags_WidthStretch);
+                            ImGui::TableSetupColumn("Proficient?", ImGuiTableColumnFlags_WidthFixed);
+                            ImGui::TableSetupColumn("Bonus:");
+                            ImGui::TableHeadersRow();
+
+                            for (auto& [skill, isProficient] : proficiencies) {
+                                ImGui::TableNextRow();
+                                ImGui::TableSetColumnIndex(0);
+                                ImGui::Text("%s", skill.c_str());
+
+                                ImGui::TableSetColumnIndex(1);
+                                ImGui::Checkbox(("##prof_" + skill).c_str(), myCharacter.getProf(skill));
+
+                                int bonus = 0;
+
+                                map<string, string> table = myCharacter.getSkillToAbility();
+
+                                auto it = table.find(skill);
+
+                                if (it != table.end()) {
+                                    string abilityName = it->second; // e.g., "dexterity", "wisdom"
+                            
+                                    // Get the ability score and calculate the modifier
+                                    int abilityScore = myCharacter.getAbility(abilityName);
+                                    
+                            
+                                    // Add ability modifier
+                                    bonus += myCharacter.getAbilityMod(abilityScore);
+                                }
+                                if (isProficient)
+                                    bonus += myCharacter.getProfBonus();
+
+                                ImGui::TableSetColumnIndex(2);
+                                ImGui::Text("%+d",bonus);
+                            }
+                            ImGui::EndTable();
+                        }
                     }
+                    
                     ImGui::EndTabItem();
                 }
                 if (ImGui::BeginTabItem("Tab 2")) {

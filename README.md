@@ -4,6 +4,7 @@
 
 - [ ] create class for default 5e style character
 - [x] implement funtions for dice and dice rolls
+- [ ] show individiual values for mass dice rolls
 
 ## Possible Features:
 * Auto calculations
