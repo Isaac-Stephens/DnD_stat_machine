@@ -31,6 +31,4 @@ int d_6(int);
 int d_4();
 int d_4(int);
 
-
-
 #endif
