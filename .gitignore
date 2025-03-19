@@ -37,4 +37,8 @@
 # ImGUI
 *.ini
 
+#clang
+.clang-format
+
 downndirtyDnD
+test.sh

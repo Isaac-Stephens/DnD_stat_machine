@@ -40,11 +40,16 @@ _This project is still in early development._
    ```sh
    $ cd .../DnD_stat_machine
    ```
-3. Build the project (ensure you have a C++ compiler, Vulkan SDK, and dependencies installed):
+3. Install dependencies package:
+   ```sh
+   $ chmod +x instal_deps.sh
+   $ ./install_deps.sh
+   ```
+4. Build the project:
    ```sh
    $ make
    ```
-4. Run the application:
+5. Run the application:
    ```sh
    $ ./downndirtyDnD
    ```
