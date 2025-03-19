@@ -14,7 +14,7 @@ _This project is still in early development._
 
 ## Features
 - **Dice Rolling System** – Implements various D&D dice mechanics via `dice.h` and `dice.cpp`.
-- **Character Stat Management** – Future integration of race-based stats from JSON files.
+- **Character Stat Management** – Future integration of race/class-based stats from JSON files.
 - **Graphical User Interface** – Utilizes Dear ImGui for interactive stat allocation and customization.
 - **Modular Design** – Structured with a dedicated `imgui/` directory for UI components and `src/` for core logic.
 
@@ -23,6 +23,7 @@ _This project is still in early development._
 - **`src/`** – Houses the main application logic, including:
   - `main.cpp` – Entry point of the application.
   - `dice.h` / `dice.cpp` – Handles D&D dice mechanics.
+  - `character.h` / `character.cpp` - Handles D&D character mechanics
 - **Planned JSON Integration** – Future development will add JSON support for race-based stat bonuses.
 
 ## Future Enhancements
@@ -33,19 +34,24 @@ _This project is still in early development._
 ## Installation & Usage
 1. Clone the repository:
    ```sh
-   git clone https://github.com/Isaac-Stephens/DnD_stat_machine.git
+   $ git clone https://github.com/Isaac-Stephens/DnD_stat_machine.git
    ```
 2. Navigate to the project directory:
    ```sh
-   cd DnD_stat_machine
+   $ cd .../DnD_stat_machine
    ```
-3. Build the project (ensure you have a C++ compiler, Vulkan SDK, and dependencies installed):
+3. Install dependencies package:
    ```sh
-   make
+   $ chmod +x instal_deps.sh
+   $ ./install_deps.sh
    ```
-4. Run the application:
+4. Build the project:
    ```sh
-   ./downndirtyDnD
+   $ make
+   ```
+5. Run the application:
+   ```sh
+   $ ./downndirtyDnD
    ```
 
 ## Contributions
